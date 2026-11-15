@@ -1,0 +1,19 @@
+meta {
+  name: Stock after negative quantity
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/menu
+  body: none
+  auth: none
+}
+
+tests {
+  test("A negative quantity must leave noodle stock unchanged", function () {
+    expect(res.status).to.equal(200);
+    const noodles = res.body.find(item => item.id === 1);
+    expect(noodles.stock).to.equal(bru.getVar("remainingNoodles"));
+  });
+}

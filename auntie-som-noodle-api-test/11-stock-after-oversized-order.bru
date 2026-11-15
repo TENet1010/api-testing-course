@@ -1,0 +1,19 @@
+meta {
+  name: Stock after oversized order
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/menu
+  body: none
+  auth: none
+}
+
+tests {
+  test("An oversized order must leave rice stock unchanged", function () {
+    expect(res.status).to.equal(200);
+    const rice = res.body.find(item => item.id === 2);
+    expect(rice.stock).to.equal(bru.getVar("riceStock"));
+  });
+}

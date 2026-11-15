@@ -1,0 +1,42 @@
+meta {
+  name: Create valid order
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "itemId": 1,
+    "quantity": 1
+  }
+}
+
+script:post-response {
+  if (res.status === 200 && res.body?.orderId) {
+    bru.setVar("orderId", res.body.orderId);
+    bru.setVar("orderTotal", res.body.totalPrice);
+  }
+}
+
+tests {
+  test("A valid order returns HTTP 200, an order ID, and created status", function () {
+    expect(res.status).to.equal(200);
+    expect(res.body.orderId).to.be.a("string").and.match(/^ORD-.+$/);
+    expect(res.body.status).to.equal("created");
+  });
+
+  test("Total price equals the menu unit price times the quantity", function () {
+    const expectedTotal = bru.getVar("noodlePrice") * req.getBody().quantity;
+    expect(res.body.totalPrice).to.equal(expectedTotal);
+  });
+}

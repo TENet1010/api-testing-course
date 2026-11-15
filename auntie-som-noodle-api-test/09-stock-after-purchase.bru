@@ -1,0 +1,25 @@
+meta {
+  name: Stock after purchase
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/menu
+  body: none
+  auth: none
+}
+
+script:post-response {
+  if (res.status === 200 && Array.isArray(res.body)) {
+    bru.setVar("remainingNoodles", res.body.find(item => item.id === 1)?.stock);
+  }
+}
+
+tests {
+  test("One noodle bowl is deducted and rice stock is unchanged", function () {
+    expect(res.status).to.equal(200);
+    expect(bru.getVar("remainingNoodles")).to.equal(bru.getVar("noodleStock") - 1);
+    expect(res.body.find(item => item.id === 2).stock).to.equal(bru.getVar("riceStock"));
+  });
+}

@@ -1,0 +1,30 @@
+meta {
+  name: Order negative quantity
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "itemId": 1,
+    "quantity": -1
+  }
+}
+
+tests {
+  test("A negative quantity returns HTTP 400 without creating an order", function () {
+    expect(res.status).to.equal(400);
+    expect(res.body.error).to.be.a("string").and.not.be.empty;
+    expect(res.body).not.to.have.property("orderId");
+  });
+}

@@ -1,0 +1,32 @@
+meta {
+  name: Order with bare token
+  type: http
+  seq: 14
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: {{accessToken}}
+}
+
+body:json {
+  {
+    "itemId": 1,
+    "quantity": 1
+  }
+}
+
+tests {
+  test("Valid token without the Bearer scheme returns HTTP 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Unauthorized");
+  });
+}

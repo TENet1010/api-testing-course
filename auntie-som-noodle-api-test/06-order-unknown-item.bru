@@ -1,0 +1,32 @@
+meta {
+  name: Order unknown item
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "itemId": 999,
+    "quantity": 1
+  }
+}
+
+tests {
+  test("Unknown menu item returns HTTP 404", function () {
+    expect(res.status).to.equal(404);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Item not found");
+  });
+}

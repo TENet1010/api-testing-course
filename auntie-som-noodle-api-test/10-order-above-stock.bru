@@ -1,0 +1,32 @@
+meta {
+  name: Order above stock
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{accessToken}}
+}
+
+body:json {
+  {
+    "itemId": 2,
+    "quantity": 2
+  }
+}
+
+tests {
+  test("Ordering two portions with only one in stock returns HTTP 400", function () {
+    expect(res.status).to.equal(400);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Out of stock");
+  });
+}

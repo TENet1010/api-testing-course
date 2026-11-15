@@ -1,0 +1,25 @@
+meta {
+  name: Read nonexistent order
+  type: http
+  seq: 15
+}
+
+get {
+  url: {{baseUrl}}/orders/ORD-nonexistent
+  body: none
+  auth: none
+}
+
+script:post-response {
+  bru.deleteEnvVar("accessToken");
+}
+
+tests {
+  test("Nonexistent order returns HTTP 404", function () {
+    expect(res.status).to.equal(404);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Order not found");
+  });
+}

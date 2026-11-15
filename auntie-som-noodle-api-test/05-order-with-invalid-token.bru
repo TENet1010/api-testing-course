@@ -1,0 +1,32 @@
+meta {
+  name: Order with invalid token
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer invalid-token
+}
+
+body:json {
+  {
+    "itemId": 1,
+    "quantity": 1
+  }
+}
+
+tests {
+  test("Invalid bearer token returns HTTP 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Unauthorized");
+  });
+}

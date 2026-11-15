@@ -49,9 +49,8 @@ The backend is a lightweight Flask application.
 - The server will run at: `http://localhost:5000`
 
 ### 3️⃣ Setup Bruno
-- Download and install [Bruno](https://www.usebruno.com).
-- Create a **New Collection** named `Auntie Som Lab`.
-- Create an **Environment** (e.g., `local`) and set a variable `baseUrl` to `http://localhost:5000`.
+- Install [Bruno](https://www.usebruno.com) and open the `auntie-som-noodle-api-test` folder as a collection.
+- Select the `local` environment and run the entire collection in sequence.
 
 ---
 
@@ -154,3 +153,32 @@ Your task is to create a comprehensive Bruno collection that validates the entir
 
 ---
 *Good luck. Auntie Som is counting on you!* 🍜🔥
+
+---
+
+## HW3 audit results
+
+### Run the collection
+
+Start the Flask API using the setup instructions above. Then open a second terminal at the repository root and run the collection with Node.js and the Bruno CLI.
+
+```bash
+cd auntie-som-noodle-api-test
+npx --yes --package @usebruno/cli@4.3.0 bru run --env local
+```
+
+Restart Flask before each full run so the in-memory menu starts with two portions of Tom Yum Noodles and one of Fried Rice. Use the collection order and let the runner continue after failed checks so that the stock checks still run.
+
+The login post-response script saves the token in the selected Bruno environment. Authenticated order requests use it as a Bearer token. The valid order's ID is captured for the next request to look it up. The last request clears the token from the environment.
+
+### Findings
+
+The collection ran 15 requests against the supplied Flask app. Bruno reported 17 passing checks and 9 failing checks across the five findings below. The valid login, missing and invalid token rejection, rejection of unknown menu items, retrieval of a created order, and stock deduction for a valid purchase all passed.
+
+| Finding | Expected | Observed and how Bruno detects it |
+| --- | --- | --- |
+| An unexplained 5-baht deduction from the order total | The listed unit price multiplied by quantity, assuming no discount. | `07 Create valid order` reads the menu price and multiplies it by the requested quantity. One bowl should total 50 baht under this assumption, but the order returns 45. The lab's response example also shows 45 and gives no discount rule. If a flat 5-baht discount is intended, this result matches that rule. |
+| Orders can exceed available stock | HTTP 400 with `Out of stock`. Rice stock stays at 1. | `10 Order above stock` requests two portions when one is available and receives HTTP 200. `11 Stock after oversized order` sees stock drop from 1 to −1. |
+| Negative quantities increase stock | HTTP 400. Noodle stock stays at 1. | `12 Order negative quantity` sends −1 and receives HTTP 200. `13 Stock after negative quantity` sees stock increase from 1 to 2. |
+| The API accepts a token without the Bearer scheme | HTTP 401 with `Unauthorized`. | `14 Order with bare token` sends the valid token as the entire Authorization header and receives HTTP 200. |
+| Looking up a missing order reports HTTP success | HTTP 404 with `Order not found`. | `15 Read nonexistent order` receives the expected error message with HTTP 200. The status check fails. |

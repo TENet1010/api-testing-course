@@ -1,0 +1,32 @@
+meta {
+  name: Invalid login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "student",
+    "password": "wrong-password"
+  }
+}
+
+tests {
+  test("Wrong password returns HTTP 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Invalid login");
+  });
+
+  test("An invalid login does not issue an access token", function () {
+    expect(res.body).not.to.have.property("accessToken");
+  });
+}

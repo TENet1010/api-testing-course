@@ -1,0 +1,28 @@
+meta {
+  name: Order without token
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/orders
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "itemId": 1,
+    "quantity": 1
+  }
+}
+
+tests {
+  test("Missing Authorization returns HTTP 401", function () {
+    expect(res.status).to.equal(401);
+  });
+
+  test("The response contains the expected error message", function () {
+    expect(res.body.error).to.equal("Unauthorized");
+  });
+}

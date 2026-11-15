@@ -1,0 +1,39 @@
+meta {
+  name: Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "student",
+    "password": "hungry"
+  }
+}
+
+script:pre-request {
+  bru.deleteEnvVar("accessToken");
+}
+
+script:post-response {
+  if (res.status === 200 && res.body?.accessToken) {
+    bru.setEnvVar("accessToken", res.body.accessToken);
+  }
+}
+
+tests {
+  test("Valid credentials return HTTP 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Login returns a token and a one-hour lifetime", function () {
+    expect(res.body.accessToken).to.be.a("string").and.not.be.empty;
+    expect(res.body.expiresIn).to.equal(3600);
+  });
+}
