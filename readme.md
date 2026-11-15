@@ -1,10 +1,10 @@
-# 🍜 API Testing Lab: Auntie Som’s Noodle Stall
+# API Testing Lab: Auntie Som’s Noodle Stall
 
 > **Objective:** Prove that Nephew Lek’s "it works on my machine" attitude is a recipe for disaster.
 
 ---
 
-## 📖 The Backstory
+## The Backstory
 
 Auntie Som runs a **legendary noodle stall**. Her Tom Yum is world-class, her customers are loyal, and her business is booming.  
 
@@ -17,24 +17,24 @@ Before Auntie Som launches this app to 1,000+ hungry customers, you must audit t
 
 ---
 
-## 🎯 Learning Objectives
+## Learning Objectives
 
 By the end of this lab, you should be able to:
-- 🖋️ Write **Bruno test scripts** for automated validation.
-- 📦 Extract values from API responses using **Post-response scripts**.
-- 🔐 Manage and use **Environment Variables**.
-- 🧠 Verify **Business Rules**, not just HTTP status codes.
-- 🚀 Catch regressions automatically before they hit production.
+- Write **Bruno test scripts** for automated validation.
+- Extract values from API responses using **Post-response scripts**.
+- Manage and use **Environment Variables**.
+- Verify **Business Rules**, not just HTTP status codes.
+- Catch regressions automatically before they hit production.
 
 ---
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
-### 1️⃣ Prepare the Project
+### 1. Prepare the Project
 - **Fork this repository** to your own GitHub account.
 - **Clone it** locally to your machine.
 
-### 2️⃣ Start the API Server
+### 2. Start the API Server
 The backend is a lightweight Flask application.
 - **Requirements:** Python 3.10+ installed.
 - **Navigate** to the `auntie-som-noodle-api` folder.
@@ -48,15 +48,15 @@ The backend is a lightweight Flask application.
   ```
 - The server will run at: `http://localhost:5000`
 
-### 3️⃣ Setup Bruno
+### 3. Setup Bruno
 - Install [Bruno](https://www.usebruno.com) and open the `auntie-som-noodle-api-test` folder as a collection.
 - Select the `local` environment and run the entire collection in sequence.
 
 ---
 
-## 📑 API Reference
+## API Reference
 
-### 🔐 Authentication
+### Authentication
 `POST /auth/login` - Get an access token.
 - **Body (JSON):**
   ```json
@@ -75,7 +75,7 @@ The backend is a lightweight Flask application.
 
 ---
 
-### 🍜 Menu
+### Menu
 `GET /menu` - View available items and stock levels.
 - **Response (200 OK):**
   ```json
@@ -87,7 +87,7 @@ The backend is a lightweight Flask application.
 
 ---
 
-### 🛒 Orders
+### Orders
 `POST /orders` - Place a new order.
 - **Headers:** `Authorization: Bearer <token>`
 - **Body (JSON):**
@@ -118,11 +118,11 @@ The backend is a lightweight Flask application.
 
 ---
 
-## 🕵️ Your Mission: The Silent Auditor
+## Your Mission: The Silent Auditor
 
 Your task is to create a comprehensive Bruno collection that validates the entire workflow.  
 
-⚠️ **The Catch:** Nephew Lek left several **logic bugs** in the system. Some endpoints might return `200 OK` even when the business logic is completely broken.
+**The Catch:** Nephew Lek left several **logic bugs** in the system. Some endpoints might return `200 OK` even when the business logic is completely broken.
 
 **Your collection must include:**
 1.  **Auth Flow**: Automatically store the `accessToken` from login and use it for subsequent requests.
@@ -135,15 +135,15 @@ Your task is to create a comprehensive Bruno collection that validates the entir
 
 ---
 
-## 🧠 Rules of the Lab
-- ❌ **Do NOT** modify the `app.py` backend code.
-- ❌ **Do NOT** rely on manual checking.
-- ✅ **Use environment variables** for the Base URL and Tokens.
-- ✅ **Use Scripts/Assertions** for all validations.
+## Rules of the Lab
+- **Do NOT** modify the `app.py` backend code.
+- **Do NOT** rely on manual checking.
+- **Use environment variables** for the Base URL and Tokens.
+- **Use Scripts/Assertions** for all validations.
 
 ---
 
-## 📦 What to Submit
+## What to Submit
 
 1.  **Push your Bruno collection folder** to your GitHub repository.
 2.  **Update your README.md** (the one in your fork) with:
@@ -152,7 +152,7 @@ Your task is to create a comprehensive Bruno collection that validates the entir
 4.  **Send the GitHub link** to your instructor via Discord.
 
 ---
-*Good luck. Auntie Som is counting on you!* 🍜🔥
+*Good luck. Auntie Som is counting on you!*
 
 ---
 
